@@ -322,8 +322,8 @@ namespace WixToolset
                     this.core.OnMessage(WixErrors.SearchPropertyNotUppercase(sourceLineNumbers, "Property", "Id", property.Id));
                 }
 
-                Row row = this.core.CreateRow(sourceLineNumbers, "AppSearch", property);
-                row[1] = signature;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "AppSearch", property);
+                row.Signature_ = signature;
             }
         }
 
@@ -375,13 +375,13 @@ namespace WixToolset
                     this.core.CreateSimpleReference(sourceLineNumbers, "Property", property.Id);
                 }
 
-                Row row = this.core.CreateRow(sourceLineNumbers, "Property", section, property);
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "Property", section, property);
 
                 // Allow row to exist with no value so that PropertyRefs can be made for *Search elements
                 // the linker will remove these rows before the final output is created.
                 if (null != value)
                 {
-                    row[1] = value;
+                    row.Value = value;
                 }
 
                 if (admin || hidden || secure)
@@ -539,20 +539,20 @@ namespace WixToolset
 
                 if (!this.core.EncounteredError)
                 {
-                    Row row = this.core.CreateRow(sourceLineNumbers, "AppId");
-                    row[0] = appId;
-                    row[1] = remoteServerName;
-                    row[2] = localService;
-                    row[3] = serviceParameters;
-                    row[4] = dllSurrogate;
+                    dynamic row = this.core.CreateRow(sourceLineNumbers, "AppId");
+                    row.AppId = appId;
+                    row.RemoteServerName = remoteServerName;
+                    row.LocalService = localService;
+                    row.ServiceParameters = serviceParameters;
+                    row.DllSurrogate = dllSurrogate;
                     if (YesNoType.Yes == activateAtStorage)
                     {
-                        row[5] = 1;
+                        row.ActivateAtStorage = 1;
                     }
 
                     if (YesNoType.Yes == runAsInteractiveUser)
                     {
-                        row[6] = 1;
+                        row.RunAsInteractiveUser = 1;
                     }
                 }
             }
@@ -642,10 +642,10 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "MsiAssemblyName");
-                row[0] = componentId;
-                row[1] = id;
-                row[2] = value;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "MsiAssemblyName");
+                row.Component_ = componentId;
+                row.Name = id;
+                row.Value = value;
             }
         }
 
@@ -727,13 +727,13 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "Binary", id);
-                row[1] = sourceFile;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "Binary", id);
+                row.Data = sourceFile;
 
                 if (YesNoType.Yes == suppressModularization)
                 {
-                    Row wixSuppressModularizationRow = this.core.CreateRow(sourceLineNumbers, "WixSuppressModularization");
-                    wixSuppressModularizationRow[0] = id;
+                    dynamic wixSuppressModularizationRow = this.core.CreateRow(sourceLineNumbers, "WixSuppressModularization");
+                    wixSuppressModularizationRow.WixSuppressModularization = id;
                 }
             }
 
@@ -803,8 +803,8 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "Icon", id);
-                row[1] = sourceFile;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "Icon", id);
+                row.Data = sourceFile;
             }
 
             return id.Id;
@@ -923,17 +923,17 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "WixInstanceTransforms");
-                row[0] = id;
-                row[1] = propertyId;
-                row[2] = productCode;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "WixInstanceTransforms");
+                row.Id = id;
+                row.PropertyId = propertyId;
+                row.ProductCode = productCode;
                 if (null != productName)
                 {
-                    row[3] = productName;
+                    row.ProductName = productName;
                 }
                 if (null != upgradeCode)
                 {
-                    row[4] = upgradeCode;
+                    row.UpgradeCode = upgradeCode;
                 }
             }
         }
@@ -995,18 +995,18 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "PublishComponent");
-                row[0] = id;
-                row[1] = qualifier;
-                row[2] = componentId;
-                row[3] = appData;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "PublishComponent");
+                row.ComponentId = id;
+                row.Qualifier = qualifier;
+                row.Component_ = componentId;
+                row.AppData = appData;
                 if (null == feature)
                 {
-                    row[4] = Guid.Empty.ToString("B");
+                    row.Feature_ = Guid.Empty.ToString("B");
                 }
                 else
                 {
-                    row[4] = feature;
+                    row.Feature_ = feature;
                 }
             }
         }
@@ -1257,33 +1257,33 @@ namespace WixToolset
                 {
                     foreach (string context in contexts)
                     {
-                        Row row = this.core.CreateRow(sourceLineNumbers, "Class");
-                        row[0] = classId;
-                        row[1] = context;
-                        row[2] = componentId;
-                        row[3] = defaultProgId;
-                        row[4] = description;
+                        dynamic row = this.core.CreateRow(sourceLineNumbers, "Class");
+                        row.CLSID = classId;
+                        row.Context = context;
+                        row.Component_ = componentId;
+                        row.ProgId_Default = defaultProgId;
+                        row.Description = description;
                         if (null != appId)
                         {
-                            row[5] = appId;
+                            row.AppId_ = appId;
                             this.core.CreateSimpleReference(sourceLineNumbers, "AppId", appId);
                         }
-                        row[6] = fileTypeMask;
+                        row.FileTypeMask = fileTypeMask;
                         if (null != icon)
                         {
-                            row[7] = icon;
+                            row.Icon_ = icon;
                             this.core.CreateSimpleReference(sourceLineNumbers, "Icon", icon);
                         }
                         if (CompilerConstants.IntegerNotSet != iconIndex)
                         {
-                            row[8] = iconIndex;
+                            row.IconIndex = iconIndex;
                         }
-                        row[9] = defaultInprocHandler;
-                        row[10] = argument;
-                        row[11] = Guid.Empty.ToString("B");
+                        row.DefInprocHandler = defaultInprocHandler;
+                        row.Argument = argument;
+                        row.Feature_ = Guid.Empty.ToString("B");
                         if (YesNoType.Yes == relativePath)
                         {
-                            row[12] = MsiInterop.MsidbClassAttributesRelativePath;
+                            row.Attributes = MsiInterop.MsidbClassAttributesRelativePath;
                         }
                     }
                 }
@@ -1701,13 +1701,13 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "Upgrade");
-                row[0] = upgradeCode;
-                row[1] = minimum;
-                row[2] = maximum;
-                row[3] = language;
-                row[4] = options;
-                row[6] = propertyId;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "Upgrade");
+                row.UpgradeCode = upgradeCode;
+                row.VersionMin = minimum;
+                row.VersionMax = maximum;
+                row.Language = language;
+                row.Attributes = options;
+                row.ActionProperty = propertyId;
             }
         }
 
@@ -1867,11 +1867,11 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "RegLocator", id);
-                row[1] = root;
-                row[2] = key;
-                row[3] = name;
-                row[4] = search64bit ? (type | 16) : type;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "RegLocator", id);
+                row.Root = root;
+                row.Key = key;
+                row.Name = name;
+                row.Type = search64bit ? (type | 16) : type;
             }
 
             return signature;
@@ -2082,8 +2082,8 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "CCPSearch");
-                row[0] = signature;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "CCPSearch");
+                row.Signature_ = signature;
             }
         }
 
@@ -2452,9 +2452,9 @@ namespace WixToolset
 
             if (shouldAddCreateFolder)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "CreateFolder");
-                row[0] = directoryId;
-                row[1] = id.Id;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "CreateFolder");
+                row.Directory_ = directoryId;
+                row.Component_ = id.Id;
             }
 
             // check for conditions that exclude this component from using generated guids
@@ -2522,33 +2522,33 @@ namespace WixToolset
             // finally add the Component table row
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "Component", id);
-                row[1] = guid;
-                row[2] = directoryId;
-                row[3] = bits | keyBits;
-                row[4] = condition;
-                row[5] = keyPath;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "Component", id);
+                row.ComponentId = guid;
+                row.Directory_ = directoryId;
+                row.Attributes = bits | keyBits;
+                row.Condition = condition;
+                row.KeyPath = keyPath;
 
                 if (multiInstance)
                 {
-                    Row instanceComponentRow = this.core.CreateRow(sourceLineNumbers, "WixInstanceComponent");
-                    instanceComponentRow[0] = id;
+                    dynamic instanceComponentRow = this.core.CreateRow(sourceLineNumbers, "WixInstanceComponent");
+                    instanceComponentRow.Component_ = id;
                 }
 
                 if (0 < symbols.Count)
                 {
-                    Row symbolRow = this.core.CreateRow(sourceLineNumbers, "WixPatchSymbolPaths");
-                    symbolRow[0] = "Component";
-                    symbolRow[1] = id;
-                    symbolRow[2] = String.Join(";", symbols);
+                    dynamic symbolRow = this.core.CreateRow(sourceLineNumbers, "WixPatchSymbolPaths");
+                    symbolRow.Table = "Component";
+                    symbolRow.Id = id;
+                    symbolRow.SymbolPaths = String.Join(";", symbols);
                 }
 
                 // Complus
                 if (CompilerConstants.IntegerNotSet != comPlusBits)
                 {
                     row = this.core.CreateRow(sourceLineNumbers, "Complus");
-                    row[0] = id;
-                    row[1] = comPlusBits;
+                    row.Component_ = id;
+                    row.ExpType = comPlusBits;
                 }
 
                 // if this is a module, automatically add this component to the references to ensure it gets in the ModuleComponents table
@@ -2866,9 +2866,9 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "CompLocator", id);
-                row[1] = componentId;
-                row[2] = type;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "CompLocator", id);
+                row.ComponentId = componentId;
+                row.Type = type;
             }
 
             return signature;
@@ -2933,9 +2933,9 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "CreateFolder");
-                row[0] = directoryId;
-                row[1] = componentId;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "CreateFolder");
+                row.Directory_ = directoryId;
+                row.Component_ = componentId;
             }
 
             return directoryId;
@@ -3056,32 +3056,32 @@ namespace WixToolset
 
                 if (!this.core.EncounteredError)
                 {
-                    Row row = this.core.CreateRow(sourceLineNumbers, "MoveFile", id);
-                    row[1] = componentId;
-                    row[2] = sourceName;
-                    row[3] = String.IsNullOrEmpty(destinationShortName) && String.IsNullOrEmpty(destinationName) ? null : GetMsiFilenameValue(destinationShortName, destinationName);
+                    dynamic row = this.core.CreateRow(sourceLineNumbers, "MoveFile", id);
+                    row.Component_ = componentId;
+                    row.SourceName = sourceName;
+                    row.DestName = String.IsNullOrEmpty(destinationShortName) && String.IsNullOrEmpty(destinationName) ? null : GetMsiFilenameValue(destinationShortName, destinationName);
                     if (null != sourceDirectory)
                     {
-                        row[4] = sourceDirectory;
+                        row.SourceFolder = sourceDirectory;
                     }
                     else if (null != sourceProperty)
                     {
-                        row[4] = sourceProperty;
+                        row.SourceFolder = sourceProperty;
                     }
                     else
                     {
-                        row[4] = sourceFolder;
+                        row.SourceFolder = sourceFolder;
                     }
 
                     if (null != destinationDirectory)
                     {
-                        row[5] = destinationDirectory;
+                        row.DestFolder = destinationDirectory;
                     }
                     else
                     {
-                        row[5] = destinationProperty;
+                        row.DestFolder = destinationProperty;
                     }
-                    row[6] = delete ? 1 : 0;
+                    row.Options = delete ? 1 : 0;
                 }
             }
             else // copy the file
@@ -3118,17 +3118,17 @@ namespace WixToolset
 
                 if (!this.core.EncounteredError)
                 {
-                    Row row = this.core.CreateRow(sourceLineNumbers, "DuplicateFile", id);
-                    row[1] = componentId;
-                    row[2] = fileId;
-                    row[3] = String.IsNullOrEmpty(destinationShortName) && String.IsNullOrEmpty(destinationName) ? null : GetMsiFilenameValue(destinationShortName, destinationName);
+                    dynamic row = this.core.CreateRow(sourceLineNumbers, "DuplicateFile", id);
+                    row.Component_ = componentId;
+                    row.File_ = fileId;
+                    row.DestName = String.IsNullOrEmpty(destinationShortName) && String.IsNullOrEmpty(destinationName) ? null : GetMsiFilenameValue(destinationShortName, destinationName);
                     if (null != destinationDirectory)
                     {
-                        row[4] = destinationDirectory;
+                        row.DestFolder = destinationDirectory;
                     }
                     else
                     {
-                        row[4] = destinationProperty;
+                        row.DestFolder = destinationProperty;
                     }
                 }
             }
@@ -3499,13 +3499,13 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "CustomAction", id);
-                row[1] = bits | sourceBits | targetBits;
-                row[2] = source;
-                row[3] = target;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "CustomAction", id);
+                row.Type = bits | sourceBits | targetBits;
+                row.Source = source;
+                row.Target = target;
                 if (0 != extendedBits)
                 {
-                    row[4] = extendedBits;
+                    row.ExtendedType = extendedBits;
                 }
 
                 if (YesNoType.Yes == suppressModularization)
@@ -4023,9 +4023,9 @@ namespace WixToolset
 
                             if (!this.core.EncounteredError)
                             {
-                                Row rowRow = this.core.CreateRow(childSourceLineNumbers, "WixCustomRow");
-                                rowRow[0] = tableId;
-                                rowRow[1] = dataValue;
+                                dynamic rowRow = this.core.CreateRow(childSourceLineNumbers, "WixCustomRow");
+                                rowRow.Table = tableId;
+                                rowRow.FieldData = dataValue;
                             }
                             break;
                         default:
@@ -4048,21 +4048,21 @@ namespace WixToolset
 
                 if (!this.core.EncounteredError)
                 {
-                    Row row = this.core.CreateRow(sourceLineNumbers, "WixCustomTable");
-                    row[0] = tableId;
-                    row[1] = columnCount;
-                    row[2] = columnNames;
-                    row[3] = columnTypes;
-                    row[4] = primaryKeys;
-                    row[5] = minValues;
-                    row[6] = maxValues;
-                    row[7] = keyTables;
-                    row[8] = keyColumns;
-                    row[9] = categories;
-                    row[10] = sets;
-                    row[11] = descriptions;
-                    row[12] = modularizations;
-                    row[13] = bootstrapperApplicationData ? 1 : 0;
+                    dynamic row = this.core.CreateRow(sourceLineNumbers, "WixCustomTable");
+                    row.Table = tableId;
+                    row.ColumnCount = columnCount;
+                    row.ColumnNames = columnNames;
+                    row.ColumnTypes = columnTypes;
+                    row.PrimaryKeys = primaryKeys;
+                    row.MinValues = minValues;
+                    row.MaxValues = maxValues;
+                    row.KeyTables = keyTables;
+                    row.KeyColumns = keyColumns;
+                    row.Categories = categories;
+                    row.Sets = sets;
+                    row.Descriptions = descriptions;
+                    row.Modularizations = modularizations;
+                    row.BootstrapperApplicationData = bootstrapperApplicationData ? 1 : 0;
                 }
             }
         }
@@ -4316,23 +4316,23 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "Directory", id);
-                row[1] = parentId;
-                row[2] = defaultDir;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "Directory", id);
+                row.Directory_Parent = parentId;
+                row.DefaultDir = defaultDir;
 
                 if (null != componentGuidGenerationSeed)
                 {
-                    Row wixRow = this.core.CreateRow(sourceLineNumbers, "WixDirectory");
-                    wixRow[0] = id.Id;
-                    wixRow[1] = componentGuidGenerationSeed;
+                    dynamic wixRow = this.core.CreateRow(sourceLineNumbers, "WixDirectory");
+                    wixRow.Directory_ = id.Id;
+                    wixRow.ComponentGuidGenerationSeed = componentGuidGenerationSeed;
                 }
 
                 if (null != symbols)
                 {
-                    Row symbolRow = this.core.CreateRow(sourceLineNumbers, "WixPatchSymbolPaths");
-                    symbolRow[0] = "Directory";
-                    symbolRow[1] = id.Id;
-                    symbolRow[2] = symbols;
+                    dynamic symbolRow = this.core.CreateRow(sourceLineNumbers, "WixPatchSymbolPaths");
+                    symbolRow.Table = "Directory";
+                    symbolRow.Id = id.Id;
+                    symbolRow.SymbolPaths = symbols;
                 }
             }
         }
@@ -4547,12 +4547,12 @@ namespace WixToolset
                     signature = id.Id;
                 }
 
-                Row row = this.core.CreateRow(sourceLineNumbers, "DrLocator", rowId);
-                row[1] = parentSignature;
-                row[2] = path;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "DrLocator", rowId);
+                row.Parent = parentSignature;
+                row.Path = path;
                 if (CompilerConstants.IntegerNotSet != depth)
                 {
-                    row[3] = depth;
+                    row.Depth = depth;
                 }
             }
 
@@ -4889,24 +4889,24 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "Feature", id);
-                row[1] = null; // this column is set in the linker
-                row[2] = title;
-                row[3] = description;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "Feature", id);
+                row.Feature_Parent = null; // this column is set in the linker
+                row.Title = title;
+                row.Description = description;
                 if (0 < display.Length)
                 {
                     switch (display)
                     {
                         case "collapse":
                             lastDisplay = (lastDisplay | 1) + 1;
-                            row[4] = lastDisplay;
+                            row.Display = lastDisplay;
                             break;
                         case "expand":
                             lastDisplay = (lastDisplay + 1) | 1;
-                            row[4] = lastDisplay;
+                            row.Display = lastDisplay;
                             break;
                         case "hidden":
-                            row[4] = 0;
+                            row.Display = 0;
                             break;
                         default:
                             int value;
@@ -4916,19 +4916,19 @@ namespace WixToolset
                             }
                             else
                             {
-                                row[4] = value;
+                                row.Display = value;
                                 // save the display value of this row (if its not hidden) for subsequent rows
-                                if (0 != (int)row[4])
+                                if (0 != (int)row.Display)
                                 {
-                                    lastDisplay = (int)row[4];
+                                    lastDisplay = (int)row.Display;
                                 }
                             }
                             break;
                     }
                 }
-                row[5] = level;
-                row[6] = configurableDirectory;
-                row[7] = bits;
+                row.Level = level;
+                row.Directory_ = configurableDirectory;
+                row.Attributes = bits;
 
                 if (ComplexReferenceParentType.Unknown != parentType)
                 {
@@ -5295,10 +5295,10 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "Environment", id);
-                row[1] = String.Concat(action, uninstall, system ? "*" : String.Empty, name);
-                row[2] = text;
-                row[3] = componentId;
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "Environment", id);
+                row.Name = String.Concat(action, uninstall, system ? "*" : String.Empty, name);
+                row.Value = text;
+                row.Component_ = componentId;
             }
         }
 
@@ -5341,9 +5341,9 @@ namespace WixToolset
 
             if (!this.core.EncounteredError)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "Error");
-                row[0] = id;
-                row[1] = Common.GetInnerText(node); // TODO: *
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "Error");
+                row.Error = id;
+                row.Message = Common.GetInnerText(node); // TODO: *
             }
         }
 
@@ -5429,12 +5429,12 @@ namespace WixToolset
             {
                 if (!this.core.EncounteredError)
                 {
-                    Row row = this.core.CreateRow(sourceLineNumbers, "Extension");
-                    row[0] = extension;
-                    row[1] = componentId;
-                    row[2] = progId;
-                    row[3] = mime;
-                    row[4] = Guid.Empty.ToString("B");
+                    dynamic row = this.core.CreateRow(sourceLineNumbers, "Extension");
+                    row.Extension = extension;
+                    row.Component_ = componentId;
+                    row.ProgId_ = progId;
+                    row.MIME_ = mime;
+                    row.Feature_ = Guid.Empty.ToString("B");
 
                     this.core.EnsureTable(sourceLineNumbers, "Verb");
                 }
@@ -5841,19 +5841,19 @@ namespace WixToolset
                 }
 
                 FileRow fileRow = (FileRow)this.core.CreateRow(sourceLineNumbers, "File", id);
-                fileRow[1] = componentId;
-                fileRow[2] = GetMsiFilenameValue(shortName, name);
-                fileRow[3] = defaultSize;
+                fileRow.Component = componentId;
+                fileRow.FileName = GetMsiFilenameValue(shortName, name);
+                fileRow.FileSize = defaultSize;
                 if (null != companionFile)
                 {
-                    fileRow[4] = companionFile;
+                    fileRow.Version = companionFile;
                 }
                 else if (null != defaultVersion)
                 {
-                    fileRow[4] = defaultVersion;
+                    fileRow.Version = defaultVersion;
                 }
-                fileRow[5] = defaultLanguage;
-                fileRow[6] = bits;
+                fileRow.Language = defaultLanguage;
+                fileRow.Attributes = bits;
 
                 // the Sequence row is set in the binder
 
@@ -5881,43 +5881,43 @@ namespace WixToolset
 
                 if (null != symbols)
                 {
-                    Row symbolRow = this.core.CreateRow(sourceLineNumbers, "WixPatchSymbolPaths");
-                    symbolRow[0] = "File";
-                    symbolRow[1] = id.Id;
-                    symbolRow[2] = symbols;
+                    dynamic symbolRow = this.core.CreateRow(sourceLineNumbers, "WixPatchSymbolPaths");
+                    symbolRow.Table = "File";
+                    symbolRow.Id = id.Id;
+                    symbolRow.SymbolPaths = symbols;
                 }
 
                 if (CompilerConstants.IntegerNotSet != assemblyAttributes)
                 {
-                    Row row = this.core.CreateRow(sourceLineNumbers, "MsiAssembly");
-                    row[0] = componentId;
-                    row[1] = Guid.Empty.ToString("B");
-                    row[2] = assemblyManifest;
-                    row[3] = assemblyApplication;
-                    row[4] = assemblyAttributes;
+                    dynamic row = this.core.CreateRow(sourceLineNumbers, "MsiAssembly");
+                    row.Component_ = componentId;
+                    row.Feature_ = Guid.Empty.ToString("B");
+                    row.File_Manifest = assemblyManifest;
+                    row.File_Application = assemblyApplication;
+                    row.Attributes = assemblyAttributes;
                 }
 
                 if (null != bindPath)
                 {
-                    Row row = this.core.CreateRow(sourceLineNumbers, "BindImage");
-                    row[0] = id.Id;
-                    row[1] = bindPath;
+                    dynamic row = this.core.CreateRow(sourceLineNumbers, "BindImage");
+                    row.File_ = id.Id;
+                    row.Path = bindPath;
 
                     // TODO: technically speaking each of the properties in the "bindPath" should be added as references, but how much do we really care about BindImage?
                 }
 
                 if (CompilerConstants.IntegerNotSet != selfRegCost)
                 {
-                    Row row = this.core.CreateRow(sourceLineNumbers, "SelfReg");
-                    row[0] = id.Id;
-                    row[1] = selfRegCost;
+                    dynamic row = this.core.CreateRow(sourceLineNumbers, "SelfReg");
+                    row.File_ = id.Id;
+                    row.Cost = selfRegCost;
                 }
 
                 if (null != fontTitle)
                 {
-                    Row row = this.core.CreateRow(sourceLineNumbers, "Font");
-                    row[0] = id.Id;
-                    row[1] = fontTitle;
+                    dynamic row = this.core.CreateRow(sourceLineNumbers, "Font");
+                    row.File_ = id.Id;
+                    row.FontTitle = fontTitle;
                 }
             }
 
@@ -6306,9 +6306,9 @@ namespace WixToolset
 
             if (!this.core.EncounteredError && null != id)
             {
-                Row row = this.core.CreateRow(sourceLineNumbers, "WixFragment");
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "WixFragment");
                 row.Access = AccessModifier.Public;
-                row[0] = id;
+                row.WixFragment = id;
             }
         }
 
@@ -7138,7 +7138,9 @@ namespace WixToolset
             if (!this.core.EncounteredError)
             {
                 // create the row that performs the upgrade (or downgrade)
-                Row row = this.core.CreateRow(sourceLineNumbers, "Upgrade");
+                dynamic row = this.core.CreateRow(sourceLineNumbers, "Upgrade");
+
+                // TODO: Left indices here to show that it still works.
                 row[0] = upgradeCode;
                 if (allowDowngrades)
                 {
@@ -10790,7 +10792,7 @@ namespace WixToolset
             string platformValue = null;
             YesNoDefaultType security = YesNoDefaultType.Default;
             int sourceBits = (this.compilingModule ? 2 : 0);
-            Row row;
+            dynamic row;
 
             switch (this.CurrentPlatform)
             {
@@ -10874,8 +10876,8 @@ namespace WixToolset
                                 {
                                     case Wix.Package.InstallScopeType.perMachine:
                                         row = this.core.CreateRow(sourceLineNumbers, "Property");
-                                        row[0] = "ALLUSERS";
-                                        row[1] = "1";
+                                        row.Property = "ALLUSERS";
+                                        row.Value = "1";
                                         break;
                                     case Wix.Package.InstallScopeType.perUser:
                                         sourceBits = sourceBits | 8;
@@ -11020,57 +11022,57 @@ namespace WixToolset
             if (!this.core.EncounteredError)
             {
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 1;
-                row[1] = codepage;
+                row.PropertyId = 1;
+                row.Value = codepage;
 
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 2;
-                row[1] = "Installation Database";
+                row.PropertyId = 2;
+                row.Value = "Installation Database";
 
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 3;
-                row[1] = packageName;
+                row.PropertyId = 3;
+                row.Value = packageName;
 
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 4;
-                row[1] = packageAuthor;
+                row.PropertyId = 4;
+                row.Value = packageAuthor;
 
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 5;
-                row[1] = keywords;
+                row.PropertyId = 5;
+                row.Value = keywords;
 
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 6;
-                row[1] = comments;
+                row.PropertyId = 6;
+                row.Value = comments;
 
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 7;
-                row[1] = String.Format(CultureInfo.InvariantCulture, "{0};{1}", platform, packageLanguages);
+                row.PropertyId = 7;
+                row.Value = String.Format(CultureInfo.InvariantCulture, "{0};{1}", platform, packageLanguages);
 
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 9;
-                row[1] = packageCode;
+                row.PropertyId = 9;
+                row.Value = packageCode;
 
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 14;
-                row[1] = msiVersion.ToString(CultureInfo.InvariantCulture);
+                row.PropertyId = 14;
+                row.Value = msiVersion.ToString(CultureInfo.InvariantCulture);
 
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 15;
-                row[1] = sourceBits.ToString(CultureInfo.InvariantCulture);
+                row.PropertyId = 15;
+                row.Value = sourceBits.ToString(CultureInfo.InvariantCulture);
 
                 row = this.core.CreateRow(sourceLineNumbers, "_SummaryInformation");
-                row[0] = 19;
+                row.PropertyId = 19;
                 switch (security)
                 {
                     case YesNoDefaultType.No: // no restriction
-                        row[1] = "0";
+                        row.Value = "0";
                         break;
                     case YesNoDefaultType.Default: // read-only recommended
-                        row[1] = "2";
+                        row.Value = "2";
                         break;
                     case YesNoDefaultType.Yes: // read-only enforced
-                        row[1] = "4";
+                        row.Value = "4";
                         break;
                 }
             }

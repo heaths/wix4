@@ -17,7 +17,9 @@ namespace WixToolset.Data
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
+    using System.Dynamic;
     using System.Globalization;
+    using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Xml;
@@ -25,11 +27,11 @@ namespace WixToolset.Data
     /// <summary>
     /// Row containing data for a table.
     /// </summary>
-    public class Row
+    public class Row : DynamicObject
     {
         private static long rowCount;
 
-        private Field[] fields;
+        private FieldCollection fields;
 
         /// <summary>
         /// Creates a row that belongs to a table.
@@ -53,13 +55,10 @@ namespace WixToolset.Data
         {
             this.Number = rowCount++;
             this.SourceLineNumbers = sourceLineNumbers;
-            this.fields = new Field[tableDefinition.Columns.Count];
             this.TableDefinition = tableDefinition;
 
-            for (int i = 0; i < this.fields.Length; ++i)
-            {
-                this.fields[i] = Field.Create(this.TableDefinition.Columns[i]);
-            }
+            var fields = tableDefinition.Columns.Select(c => Field.Create(c));
+            this.fields = new FieldCollection(fields);
         }
 
         /// <summary>
@@ -132,7 +131,7 @@ namespace WixToolset.Data
         /// </summary>
         /// <value>Array of field objects</value>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public Field[] Fields
+        public FieldCollection Fields
         {
             get { return this.fields; }
         }
@@ -146,9 +145,20 @@ namespace WixToolset.Data
         /// <summary>
         /// Gets or sets the value of a particular field in the row.
         /// </summary>
-        /// <param name="field">field index.</param>
+        /// <param name="field">The index of a field</param>
         /// <value>Value of a field in the row.</value>
         public object this[int field]
+        {
+            get { return this.fields[field].Data; }
+            set { this.fields[field].Data = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value of a particular named field in the row.
+        /// </summary>
+        /// <param name="field">The name of a field.</param>
+        /// <returns>Value of a field in the row.</returns>
+        public object this[string field]
         {
             get { return this.fields[field].Data; }
             set { this.fields[field].Data = value; }
@@ -209,6 +219,53 @@ namespace WixToolset.Data
         public string GetPrimaryKey(char delimiter = '/')
         {
             return this.GetPrimaryKey(delimiter, String.Empty);
+        }
+
+        /// <summary>
+        /// Gets the column names for this row.
+        /// </summary>
+        /// <returns>The column names for this row.</returns>
+        public override IEnumerable<string> GetDynamicMemberNames()
+        {
+            return this.TableDefinition.Columns.Select(c => c.Name);
+        }
+
+        /// <summary>
+        /// Gets the named field value from a dynamic <see cref="Row"/>.
+        /// </summary>
+        /// <param name="binder">The <see cref="GetMemberBinder"/> that provides binding information.</param>
+        /// <param name="value">The named field value.</param>
+        /// <returns>Whether the binding operation was successful and the field value retrieved.</returns>
+        public override bool TryGetMember(GetMemberBinder binder, out object value)
+        {
+            if (this.fields.ContainsKey(binder.Name))
+            {
+                var field = this.fields[binder.Name];
+
+                value = field.Data;
+                return true;
+            }
+
+            return base.TryGetMember(binder, out value);
+        }
+
+        /// <summary>
+        /// Sets the named field value for a dynamic <see cref="Row"/>.
+        /// </summary>
+        /// <param name="binder">the <see cref="SetMemberBinder"/> that provides binding information.</param>
+        /// <param name="value">The named field value.</param>
+        /// <returns>Whether the binding operation was successful and the field value was set.</returns>
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            if (this.fields.ContainsKey(binder.Name))
+            {
+                var field = this.fields[binder.Name];
+
+                field.Data = value;
+                return true;
+            }
+
+            return base.TrySetMember(binder, value);
         }
 
         /// <summary>
@@ -291,7 +348,7 @@ namespace WixToolset.Data
         /// <returns>A string representation of the Row.</returns>
         public override string ToString()
         {
-            return String.Join("/", (object[])this.fields);
+            return String.Join("/", this.fields);
         }
 
         /// <summary>

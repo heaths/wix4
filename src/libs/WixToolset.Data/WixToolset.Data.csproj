@@ -27,6 +27,7 @@
     <Compile Include="DuplicateSymbolsException.cs" />
     <Compile Include="EmptyRule.cs" />
     <Compile Include="Field.cs" />
+    <Compile Include="FieldCollection.cs" />
     <Compile Include="FileFormat.cs" />
     <Compile Include="FileStructure.cs" />
     <Compile Include="ILibraryBinaryFileResolver.cs" />
@@ -45,6 +46,7 @@
     <Compile Include="PackagingType.cs" />
     <Compile Include="Pdb.cs" />
     <Compile Include="Platform.cs" />
+    <Compile Include="ReadOnlyKeyedCollection.cs" />
     <Compile Include="Row.cs" />
     <Compile Include="AccessModifier.cs" />
     <Compile Include="RowIndexedList.cs" />

@@ -13,7 +13,7 @@ namespace WixToolset.Data
     using System.Collections.Generic;
 
     /// <summary>
-    /// A dictionary of rows. Unlike the <see cref="RowIndexedCollection"/> this
+    /// A dictionary of rows. Unlike the <see cref="RowIndexedList"/> this
     /// will throw when multiple rows with the same key are added.
     /// </summary>
     public sealed class RowDictionary<T> : Dictionary<string, T> where T : Row

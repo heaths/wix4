@@ -26,7 +26,10 @@ namespace WixToolset.Tools
             this.ShowLogo = true;
             this.Tidy = true;
 
+            this.PatchTransforms = new List<PatchTransform>();
             this.Extensions = new List<string>();
+            this.TargetBindPaths = new List<BindPath>();
+            this.UpdatedBindPaths = new List<BindPath>();
         }
 
         public bool Delta { get; private set; }

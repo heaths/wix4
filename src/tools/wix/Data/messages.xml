@@ -1920,11 +1920,6 @@
                 <Parameter Type="System.String" Name="value" />
             </Instance>
         </Message>
-        <Message Id="NoDifferencesInTransform" Number="227">
-            <Instance>
-                The transform being built did not contain any differences so it could not be created.
-            </Instance>
-        </Message>
         <Message Id="OutputCodepageMismatch" Number="228">
             <Instance>
                 The code pages of the outputs do not match.  One output's code page is '{0}' while the other is '{1}'.
@@ -3775,12 +3770,9 @@
                 <Parameter Type="System.String" Name="dominantValue" />
             </Instance>
         </Message>
-        <Message Id="BackslashTerminateInlineDirectorySyntax" Number="1147">
+        <Message Id="NoDifferencesInTransform" Number="1147">
             <Instance>
-                Backslash terminate the {0}/@{1} attribute's inline directory value '{2}'. A backslash ensures a directory name will not be mistaken for a directory reference.
-                <Parameter Type="System.String" Name="elementName" />
-                <Parameter Type="System.String" Name="attributeName" />
-                <Parameter Type="System.String" Name="value" />
+                The transform being built did not contain any differences so it could not be created.
             </Instance>
         </Message>
         <Message Id="VersionTruncated" Number="1148">
@@ -3789,6 +3781,14 @@
                 <Parameter Type="System.String" Name="originalVersion" />
                 <Parameter Type="System.String" Name="package" />
                 <Parameter Type="System.String" Name="truncatedVersion" />
+            </Instance>
+        </Message>
+        <Message Id="BackslashTerminateInlineDirectorySyntax" Number="1149">
+            <Instance>
+                Backslash terminate the {0}/@{1} attribute's inline directory value '{2}'. A backslash ensures a directory name will not be mistaken for a directory reference.
+                <Parameter Type="System.String" Name="elementName" />
+                <Parameter Type="System.String" Name="attributeName" />
+                <Parameter Type="System.String" Name="value" />
             </Instance>
         </Message>
     </Class>

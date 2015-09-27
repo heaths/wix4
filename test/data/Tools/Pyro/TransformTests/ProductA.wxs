@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  <copyright file="ProductA.wxs" company="Outercurve Foundation">
+    Copyright (c) 2004, Outercurve Foundation.
+    This software is released under Microsoft Reciprocal License (MS-RL).
+    The license and further copyright text can be found in the file
+    LICENSE.TXT at the root directory of the distribution.
+  </copyright>
+-->
+
+<?ifndef TestName?>
+<?define TestName=TransformTests?>
+<?endif?>
+
+<?ifndef Version?>
+<?define Version=1.0.0.0?>
+<?endif?>
+
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Product Id="FB824B44-7AD5-4A08-8446-9ECFA48B1015" Name="$(var.TestName) - ProductA" Language="1033" Version="$(var.Version)" Manufacturer="WiX Toolset" UpgradeCode="6DD19B92-6546-441A-93A6-A4F5FA7A2593">
+    <Package Description="This package is only for testing purposes" InstallerVersion="200"/>
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="Wix" Name="ProductA">
+          <Component Id="ComponentA" Guid="49CA91D9-A791-4521-BAEE-342FB03B73F2">
+            <RegistryValue Root="HKLM" Key="SOFTWARE\Wix\Tests\ProductA" Name="Version" Type="string" Value="$(var.Version)" KeyPath="yes" />
+            <!-- BUGBUG: Have to add file to workaround binder regression. -->
+            <File Source="$(sys.SOURCEFILEPATH)" />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+  </Product>
+</Wix>

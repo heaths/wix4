@@ -313,7 +313,7 @@ namespace WixToolset.Dtf.Compression
         {
             if (stream != null)
             {
-                stream.Close();
+                stream.Dispose();
 
                 FileStream fileStream = stream as FileStream;
                 if (fileStream != null)
@@ -394,7 +394,7 @@ namespace WixToolset.Dtf.Compression
         {
             if (stream != null)
             {
-                stream.Close();
+                stream.Dispose();
             }
         }
 
@@ -479,7 +479,7 @@ namespace WixToolset.Dtf.Compression
         {
             if (stream != null)
             {
-                stream.Close();
+                stream.Dispose();
             }
         }
 
@@ -579,7 +579,7 @@ namespace WixToolset.Dtf.Compression
         {
             if (stream != null)
             {
-                stream.Close();
+                stream.Dispose();
             }
 
             string filePath = this.TranslateFilePath(path);

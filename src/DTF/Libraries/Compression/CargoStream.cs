@@ -134,18 +134,16 @@ namespace WixToolset.Dtf.Compression
             this.source.SetLength(value);
         }
 
+#if NET20
         /// <summary>
         /// Closes the source stream and also closes the additional objects that are carried.
         /// </summary>
+        /// <seealso cref="Dispose(bool)"/>
         public override void Close()
         {
-            this.source.Close();
-
-            foreach (IDisposable cargoObject in this.cargo)
-            {
-                cargoObject.Dispose();
-            }
+            this.Dispose();
         }
+#endif
 
         /// <summary>
         /// Reads from the source stream.
@@ -187,6 +185,22 @@ namespace WixToolset.Dtf.Compression
         public override long Seek(long offset, SeekOrigin origin)
         {
             return this.source.Seek(offset, origin);
+        }
+
+        /// <summary>
+        /// Disposes the stream and any additional objects that are carried.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.source.Dispose();
+
+                foreach (IDisposable cargoObject in this.cargo)
+                {
+                    cargoObject.Dispose();
+                }
+            }
         }
     }
 }

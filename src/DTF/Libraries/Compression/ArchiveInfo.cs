@@ -8,15 +8,21 @@ namespace WixToolset.Dtf.Compression
     using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
+
+#if NET20
     using System.Security.Permissions;
     using System.Runtime.Serialization;
+#endif
+
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Abstract object representing a compressed archive on disk;
     /// provides access to file-based operations on the archive.
     /// </summary>
+#if NET20
     [Serializable]
+#endif
     public abstract class ArchiveInfo : FileSystemInfo
     {
         /// <summary>
@@ -37,6 +43,7 @@ namespace WixToolset.Dtf.Compression
             this.FullPath = Path.GetFullPath(path);
         }
 
+#if NET20
         /// <summary>
         /// Initializes a new instance of the ArchiveInfo class with serialized data.
         /// </summary>
@@ -48,6 +55,7 @@ namespace WixToolset.Dtf.Compression
             : base(info, context)
         {
         }
+#endif
 
         /// <summary>
         /// Gets the directory that contains the archive.
@@ -679,7 +687,7 @@ namespace WixToolset.Dtf.Compression
                 delegate(string match)
                 {
                     return String.Compare(
-                        match, path, true, CultureInfo.InvariantCulture) == 0;
+                        match, path, StringComparison.OrdinalIgnoreCase) == 0;
                 });
             return (files != null && files.Count > 0 ? files[0] : null);
         }

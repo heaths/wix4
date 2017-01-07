@@ -1,0 +1,23 @@
+{
+    "frameworks": {
+        "net20": {
+            "frameworkAssemblies": {
+                "System": "",
+                "System.Configuration": "",
+                "System.Xml": ""
+            }
+        },
+        "netstandard1.6": {
+            "dependencies": {
+                "NETStandard.Library": "1.6.0"
+            },
+            "imports": [
+                "dnxcore50",
+                "portable-net452"
+            ]
+        }
+    },
+    "runtimes": {
+        "win7-x86": {}
+    }
+}

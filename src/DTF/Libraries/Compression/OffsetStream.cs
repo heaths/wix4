@@ -195,12 +195,26 @@ namespace WixToolset.Dtf.Compression
             this.source.SetLength(value + this.sourceOffset);
         }
 
+#if NET20
         /// <summary>
         /// Closes the underlying stream.
         /// </summary>
+        /// <seealso cref="Dispose(bool)"/>
         public override void Close()
         {
-            this.source.Close();
+            this.Dispose();
+        }
+#endif
+
+        /// <summary>
+        /// Disposes the underlying stream.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.source.Dispose();
+            }
         }
     }
 }

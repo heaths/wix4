@@ -4,8 +4,12 @@ namespace WixToolset.Dtf.Compression
 {
     using System;
     using System.IO;
+
+#if NET20
     using System.Security.Permissions;
     using System.Runtime.Serialization;
+#endif
+
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
@@ -13,7 +17,9 @@ namespace WixToolset.Dtf.Compression
     /// provides operations for getting the file properties and unpacking
     /// the file.
     /// </summary>
+#if NET20
     [Serializable]
+#endif
     public abstract class ArchiveFileInfo : FileSystemInfo
     {
         private ArchiveInfo archiveInfo;
@@ -81,6 +87,7 @@ namespace WixToolset.Dtf.Compression
             this.initialized = true;
         }
 
+#if NET20
         /// <summary>
         /// Initializes a new instance of the ArchiveFileInfo class with
         /// serialized data.
@@ -104,6 +111,7 @@ namespace WixToolset.Dtf.Compression
             this.lastWriteTime = info.GetDateTime("lastWriteTime");
             this.length = info.GetInt64("length");
         }
+#endif
 
         /// <summary>
         /// Gets the name of the file.
@@ -281,6 +289,7 @@ namespace WixToolset.Dtf.Compression
         /// object data.</param>
         /// <param name="context">The StreamingContext that contains contextual
         /// information about the source or destination.</param>
+#if NET20
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(
             SerializationInfo info, StreamingContext context)
@@ -296,6 +305,7 @@ namespace WixToolset.Dtf.Compression
             info.AddValue("lastWriteTime", this.lastWriteTime);
             info.AddValue("length", this.length);
         }
+#endif
 
         /// <summary>
         /// Gets the full path to the file.

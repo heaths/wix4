@@ -282,7 +282,7 @@ using System.Globalization;
                 delegate(string match)
                 {
                     return String.Compare(
-                        match, path, true, CultureInfo.InvariantCulture) == 0;
+                        match, path, StringComparison.OrdinalIgnoreCase) == 0;
                 });
             
             Stream extractStream = streamContext.FileStream;

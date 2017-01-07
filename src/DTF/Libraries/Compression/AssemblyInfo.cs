@@ -3,13 +3,17 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+
+#if NET20
 using System.Security;
 using System.Security.Permissions;
+#endif
 
 [assembly: AssemblyDescription("Abstract base libraries for archive packing and unpacking")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 
+#if NET20
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, Unrestricted = true)]
 
 // SECURITY: Review carefully!
@@ -18,3 +22,4 @@ using System.Security.Permissions;
 // file I/O permission. Or they can even do in-memory compression and extraction
 // with absolutely no file I/O permission.
 [assembly: AllowPartiallyTrustedCallers]
+#endif

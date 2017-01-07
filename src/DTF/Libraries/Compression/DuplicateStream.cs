@@ -135,13 +135,16 @@ namespace WixToolset.Dtf.Compression
             this.source.SetLength(value);
         }
 
+#if NET20
         /// <summary>
         /// Closes the underlying stream, effectively closing ALL duplicates.
         /// </summary>
+        /// <seealso cref="Dispose(bool)"/>
         public override void Close()
         {
-            this.source.Close();
+            this.Dispose();
         }
+#endif
 
         /// <summary>
         /// Reads from the source stream while maintaining a separate position
@@ -207,6 +210,17 @@ namespace WixToolset.Dtf.Compression
 
             this.position = originPosition + offset;
             return this.position;
+        }
+
+        /// <summary>
+        /// Disposes the underlying stream, effectively closing all duplicates.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.source.Dispose();
+            }
         }
     }
 }

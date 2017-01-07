@@ -6,7 +6,9 @@ namespace WixToolset.Dtf.Compression
     using System.Security;
     using System.Runtime.InteropServices;
 
+#if NET20
     [SuppressUnmanagedCodeSecurity]
+#endif
     internal static class SafeNativeMethods
     {
         [DllImport("kernel32.dll", SetLastError = true)]

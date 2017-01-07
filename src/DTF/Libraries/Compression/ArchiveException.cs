@@ -4,14 +4,19 @@ namespace WixToolset.Dtf.Compression
 {
     using System;
     using System.IO;
+
+#if NET20
     using System.Runtime.Serialization;
+#endif
 
     /// <summary>
     /// Base exception class for compression operations. Compression libraries should
     /// derive subclass exceptions with more specific error information relevent to the
     /// file format.
     /// </summary>
+#if NET20
     [Serializable]
+#endif
     public class ArchiveException : IOException
     {
         /// <summary>
@@ -44,6 +49,7 @@ namespace WixToolset.Dtf.Compression
         {
         }
 
+#if NET20
         /// <summary>
         /// Initializes a new instance of the ArchiveException class with serialized data.
         /// </summary>
@@ -53,5 +59,6 @@ namespace WixToolset.Dtf.Compression
             : base(info, context)
         {
         }
+#endif
     }
 }
